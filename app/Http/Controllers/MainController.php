@@ -40,12 +40,12 @@ class MainController extends Controller
         if ($get_started) {
             $bot->reply('Hello, here is your voucher code: '.$this->getCoupon($ref));
             $question = Question::create('Want to do another test? '.$this->getLink($ref))
-                ->addButton(new Button('Yes'))
-                ->addButton(new Button('No'));
+                ->addButton(Button::create('Yes')->value('Yes'))
+                ->addButton(Button::create('No')->value('No'));
         } else {
             $question = Question::create('Hello, here is your voucher code: '.$this->getCoupon($ref))
-                ->addButton(new Button('Yes'))
-                ->addButton(new Button('No'));
+                ->addButton(Button::create('Yes')->value('Yes'))
+                ->addButton(Button::create('No')->value('No'));
         }
 
         $conversation = new CouponConversation();
@@ -54,11 +54,12 @@ class MainController extends Controller
         $bot->startConversation($conversation);
     }
 
-    protected function getCoupon() {
+    protected function getCoupon($ref) {
         return '[COUPON]';
     }
 
     protected function getLink($ref) {
+        $ref = str_replace('_', '&', $ref);
         return 'https://www.techtrendr.com/?'.$ref;
     }
 }

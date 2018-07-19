@@ -108,6 +108,6 @@ return [
     |
     */
     'whitelisted_domains' => [
-        'https://petersfancyapparel.com',
+        'https://coupon-bot.herokuapp.com/',
     ],
 ];

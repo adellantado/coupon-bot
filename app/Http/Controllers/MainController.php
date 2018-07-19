@@ -15,6 +15,11 @@ class MainController extends Controller
     public function listen(Request $request) {
         $payload= json_decode($request->getContent(), true);
         $ref = null;
+
+        /** @var BotMan $bot */
+        $bot = resolve('bot');
+        $bot->listen();
+
         if (isset($payload['entry'])) {
             $data = $payload['entry'][0]['messaging'][0];
 
@@ -31,9 +36,6 @@ class MainController extends Controller
             return;
         }
 
-        /** @var BotMan $bot */
-        $bot = resolve('bot');
-        $bot->listen();
         $bot->userStorage()->save(['ref' => $ref]);
 
         $get_started = false;

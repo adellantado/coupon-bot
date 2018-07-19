@@ -18,10 +18,12 @@ class MainController extends Controller
         if (isset($payload['entry'])) {
             $data = $payload['entry'][0]['messaging'][0];
 
-            if (key_exists('referral', $data)) {
+            if (key_exists('referral', $data) && key_exists('ref', $data['referral'])) {
                 $ref = $data['referral']['ref'];
             } elseif (key_exists('postback', $data) && key_exists('referral', $data['postback'])) {
                 $ref = $data['postback']['referral'];
+            } elseif (key_exists('optin', $data) && key_exists('ref', $data['optin'])) {
+                $ref = $data['optin']['ref'];
             }
         }
 

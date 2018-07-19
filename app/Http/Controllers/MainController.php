@@ -13,13 +13,14 @@ class MainController extends Controller
 {
 
     public function listen(Request $request) {
-        $payload= json_decode($request->getContent(), true);
-        $ref = null;
 
         /** @var BotMan $bot */
         $bot = resolve('bot');
         $bot->listen();
 
+        $ref = null;
+        $optin = false;
+        $payload= json_decode($request->getContent(), true);
         if (isset($payload['entry'])) {
             $data = $payload['entry'][0]['messaging'][0];
 
@@ -28,18 +29,16 @@ class MainController extends Controller
             } elseif (key_exists('postback', $data) && key_exists('referral', $data['postback'])) {
                 $ref = $data['postback']['referral'];
             } elseif (key_exists('optin', $data) && key_exists('ref', $data['optin'])) {
+                $optin = true;
                 $ref = $data['optin']['ref'];
             }
         }
-
         if (!$ref) {
             return;
         }
 
         $bot->userStorage()->save(['ref' => $ref]);
-
-        $get_started = false;
-        if ($get_started) {
+        if ($optin) {
             $bot->reply('Hello, here is your voucher code: '.$this->getCoupon($ref));
             $question = Question::create('Want to do another test? '.$this->getLink($ref))
                 ->addButton(Button::create('Yes')->value('Yes'))

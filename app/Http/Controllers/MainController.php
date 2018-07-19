@@ -8,6 +8,7 @@ use BotMan\BotMan\BotMan;
 use BotMan\BotMan\Messages\Outgoing\Actions\Button;
 use BotMan\BotMan\Messages\Outgoing\Question;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class MainController extends Controller
 {
@@ -39,6 +40,7 @@ class MainController extends Controller
                 $this->sendMessage($bot, $this->ref);
             });
             $bot->on('optin', function($payload, $bot) {
+                Log::info('optin works!');
                 $this->sendMessage($bot, $this->ref, true);
             });
             $bot->on('referral', function($payload, $bot) {

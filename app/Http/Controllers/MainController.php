@@ -12,9 +12,9 @@ use Illuminate\Http\Request;
 class MainController extends Controller
 {
 
-    public function listen(Request $request) {
+    protected $ref;
 
-        $ref = null;
+    public function listen(Request $request) {
         $optin = false;
         $get_started = false;
         $payload= json_decode($request->getContent(), true);
@@ -22,32 +22,32 @@ class MainController extends Controller
             $data = $payload['entry'][0]['messaging'][0];
 
             if (key_exists('referral', $data) && key_exists('ref', $data['referral'])) {
-                $ref = $data['referral']['ref'];
+                $this->ref = $data['referral']['ref'];
             } elseif (key_exists('postback', $data) && key_exists('referral', $data['postback'])&& key_exists('ref', $data['postback']['referral'])) {
                 $get_started = true;
-                $ref = $data['postback']['referral']['ref'];
+                $this->ref  = $data['postback']['referral']['ref'];
             } elseif (key_exists('optin', $data) && key_exists('ref', $data['optin'])) {
                 $optin = true;
-                $ref = $data['optin']['ref'];
+                $this->ref  = $data['optin']['ref'];
             }
         }
 
         /** @var BotMan $bot */
         $bot = resolve('bot');
-//        if ($ref && $get_started) {
-//            $bot->hears('GET_STARTED', function($bot){
-//                $bot->reply('Test');
-//            });
-//        }
+        if ($this->ref  && $get_started) {
+            $bot->hears('GET_STARTED', function($bot) {
+                $this->sendMessage($bot, $this->ref);
+            });
+        }
         $bot->listen();
 
 
-        if ($ref) {
-            $this->sendMessage($bot, $ref, $optin);
+        if ($this->ref  && !$get_started) {
+            $this->sendMessage($bot, $this->ref , $optin);
         }
     }
 
-    protected function sendMessage(BotMan $bot, $ref, $optin) {
+    protected function sendMessage(BotMan $bot, $ref, $optin = false) {
         $bot->userStorage()->save(['ref' => $ref]);
         if ($optin) {
             $bot->reply('Hello, here is your voucher code: '.$this->getCoupon($ref));

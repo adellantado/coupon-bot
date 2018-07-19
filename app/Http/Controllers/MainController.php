@@ -39,11 +39,11 @@ class MainController extends Controller
             $bot->hears('GET_STARTED', function($bot) {
                 $this->sendMessage($bot, $this->ref);
             });
-            $bot->on('optin', function($payload, $bot) {
+            $bot->on('messaging_optins', function($payload, $bot) {
                 Log::info('optin works!');
                 $this->sendMessage($bot, $this->ref, true);
             });
-            $bot->on('referral', function($payload, $bot) {
+            $bot->on('messaging_referrals', function($payload, $bot) {
                 $this->sendMessage($bot, $this->ref);
             });
         }

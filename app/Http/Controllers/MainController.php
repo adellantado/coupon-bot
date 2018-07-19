@@ -26,8 +26,8 @@ class MainController extends Controller
 
             if (key_exists('referral', $data) && key_exists('ref', $data['referral'])) {
                 $ref = $data['referral']['ref'];
-            } elseif (key_exists('postback', $data) && key_exists('referral', $data['postback'])) {
-                $ref = $data['postback']['referral'];
+            } elseif (key_exists('postback', $data) && key_exists('referral', $data['postback'])&& key_exists('ref', $data['postback']['referral'])) {
+                $ref = $data['postback']['referral']['ref'];
             } elseif (key_exists('optin', $data) && key_exists('ref', $data['optin'])) {
                 $optin = true;
                 $ref = $data['optin']['ref'];

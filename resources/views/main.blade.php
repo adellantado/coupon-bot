@@ -105,7 +105,7 @@
                 <div class="fb-send-to-messenger"
                      messenger_app_id="201400853863256"
                      page_id="218528402320713"
-                     data-ref="lang=fr&set=0011"
+                     data-ref="lang=fr;set=0011"
                      color="blue"
                      size="large">
                 </div>

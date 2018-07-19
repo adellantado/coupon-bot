@@ -15,9 +15,10 @@ class CouponConversation extends Conversation {
     public function run() {
         $this->bot->ask($this->question, function(Answer $answer) {
             $text = $answer->getText();
-            if ($text == 'Yes') {
+            $value = $answer->getValue();
+            if ($text == 'Yes' || $value == 'Yes') {
                 $this->say('Great, ' . $this->url);
-            } elseif ($text == 'No') {
+            } elseif ($text == 'No' || $value == 'No') {
                 $this->say('Ok.');
             }
         });

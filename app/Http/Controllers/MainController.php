@@ -51,11 +51,11 @@ class MainController extends Controller
         $bot->userStorage()->save(['ref' => $ref]);
         if ($optin) {
             $bot->reply('Hello, here is your voucher code: '.$this->getCoupon($ref));
-            $question = Question::create('Want to do another test? '.$this->getLink($ref))
+            $question = Question::create('Want to do another test?')
                 ->addButton(Button::create('Yes')->value('Yes'))
                 ->addButton(Button::create('No')->value('No'));
         } else {
-            $question = Question::create('Hello, here is your voucher code: '.$this->getCoupon($ref))
+            $question = Question::create('Hello, want to do another test? '.$this->getLink($ref))
                 ->addButton(Button::create('Yes')->value('Yes'))
                 ->addButton(Button::create('No')->value('No'));
         }

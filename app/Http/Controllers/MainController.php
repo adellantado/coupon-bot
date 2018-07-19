@@ -34,17 +34,23 @@ class MainController extends Controller
 
         /** @var BotMan $bot */
         $bot = resolve('bot');
-        if ($this->ref  && $get_started) {
+        if ($this->ref) {
             $bot->hears('GET_STARTED', function($bot) {
+                $this->sendMessage($bot, $this->ref);
+            });
+            $bot->on('optin', function($bot) {
+                $this->sendMessage($bot, $this->ref, true);
+            });
+            $bot->on('referral', function($bot) {
                 $this->sendMessage($bot, $this->ref);
             });
         }
         $bot->listen();
 
-
-        if ($this->ref  && !$get_started) {
-            $this->sendMessage($bot, $this->ref , $optin);
-        }
+//
+//        if ($this->ref  && !$get_started) {
+//            $this->sendMessage($bot, $this->ref , $optin);
+//        }
     }
 
     protected function sendMessage(BotMan $bot, $ref, $optin = false) {

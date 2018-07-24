@@ -8,7 +8,6 @@ use BotMan\BotMan\BotMan;
 use BotMan\BotMan\Messages\Outgoing\Actions\Button;
 use BotMan\BotMan\Messages\Outgoing\Question;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 
 class MainController extends Controller
 {
@@ -16,8 +15,6 @@ class MainController extends Controller
     protected $ref;
 
     public function listen(Request $request) {
-        $optin = false;
-        $get_started = false;
         $payload= json_decode($request->getContent(), true);
         if (isset($payload['entry'])) {
             $data = $payload['entry'][0]['messaging'][0];
@@ -40,7 +37,6 @@ class MainController extends Controller
                 $this->sendMessage($bot, $this->ref);
             });
             $bot->on('messaging_optins', function($payload, $bot) {
-                Log::info('optin works!');
                 $this->sendMessage($bot, $this->ref, true);
             });
             $bot->on('messaging_referrals', function($payload, $bot) {
@@ -48,11 +44,6 @@ class MainController extends Controller
             });
         }
         $bot->listen();
-
-//
-//        if ($this->ref  && !$get_started) {
-//            $this->sendMessage($bot, $this->ref , $optin);
-//        }
     }
 
     protected function sendMessage(BotMan $bot, $ref, $optin = false) {
@@ -63,7 +54,7 @@ class MainController extends Controller
                 ->addButton(Button::create('Yes')->value('Yes'))
                 ->addButton(Button::create('No')->value('No'));
         } else {
-            $question = Question::create('Hello, want to do another test? '.$this->getLink($ref))
+            $question = Question::create('Hello, want to do another test?')
                 ->addButton(Button::create('Yes')->value('Yes'))
                 ->addButton(Button::create('No')->value('No'));
         }

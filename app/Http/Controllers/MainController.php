@@ -66,7 +66,7 @@ class MainController extends Controller
     }
 
     protected function getCoupon($ref) {
-        return '[COUPON]';
+        return '344';
     }
 
     protected function getLink($ref) {

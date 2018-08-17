@@ -109,5 +109,7 @@ return [
     */
     'whitelisted_domains' => [
         'https://coupon-bot.herokuapp.com/',
+        'https://techtrendr.com/',
+        'https://greentrendr.com/'
     ],
 ];
